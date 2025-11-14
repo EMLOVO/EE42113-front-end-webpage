@@ -1,0 +1,8 @@
+# Wrangler config template. Fill in `account_id` and `name` before using locally.
+name = "study-app-pages"
+account_id = "PUT_YOUR_ACCOUNT_ID_HERE"
+compatibility_date = "2025-11-14"
+
+[site]
+bucket = "./build"
+entry-point = "workers-site"
