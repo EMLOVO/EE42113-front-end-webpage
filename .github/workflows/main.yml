@@ -17,14 +17,25 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies
-        run: npm ci
+        # Use npm ci when a lockfile exists, otherwise fall back to npm install
+        run: |
+          if [ -f package-lock.json ] ; then
+            echo "Found package-lock.json, running npm ci"
+            npm ci
+          else
+            echo "No package-lock.json found, running npm install to generate a lockfile"
+            npm install
+          fi
+        shell: bash
 
       - name: Build
         run: npm run build
 
       - name: Publish to Cloudflare Pages (Wrangler)
         # Uses Wrangler to publish the `build` directory to Pages
-        run: npx wrangler@3 pages publish build --project-name=${{ secrets.CF_PROJECT_NAME }}
+        run: |
+          npx wrangler@3 pages publish build --project-name="${{ secrets.CF_PROJECT_NAME }}"
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
           ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+        shell: bash
