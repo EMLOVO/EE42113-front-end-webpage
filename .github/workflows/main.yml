@@ -1,18 +1,30 @@
-            - name: Deploy to Cloudflare Pages
-  # You may pin to the exact commit or the version.
-  # uses: The-Noah/pages-action@d255a89609d693cac3acee15279e62f97ee1eeda
-  uses: The-Noah/pages-action@v1.0.2
-  with:
-    # Cloudflare API Token
-    apiToken: 
-    # Cloudflare Account ID
-    accountId: 
-    # The name of the Pages project to upload to
-    projectName: 
-    # The directory of static assets to upload
-    directory: 
-    # GitHub Token
-    gitHubToken: 
-    # The name of the branch you want to deploy to
-    branch: # optional
-          
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Publish to Cloudflare Pages (Wrangler)
+        # Uses Wrangler to publish the `build` directory to Pages
+        run: npx wrangler@3 pages publish build --project-name=${{ secrets.CF_PROJECT_NAME }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
