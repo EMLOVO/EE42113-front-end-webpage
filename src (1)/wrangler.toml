@@ -1,0 +1,19 @@
+## Wrangler config template (NOTE: not required for Cloudflare Pages publish)
+##
+## This file is a template only. For Cloudflare Pages (recommended for this repo)
+## you do NOT need to run `wrangler deploy`. Instead, use the Pages publish
+## command shown in the README:
+##
+##   npx wrangler pages publish build --project-name="<YOUR_PAGES_PROJECT_NAME>"
+##
+## If you *do* want to deploy this as a Workers Site (advanced), replace the
+## placeholders below and remove this comment. That workflow is more complex
+## and not necessary for a static Vite SPA.
+
+name = "study-app-pages"
+account_id = "PUT_YOUR_ACCOUNT_ID_HERE"
+compatibility_date = "2025-11-14"
+
+## Workers Sites configuration removed to avoid accidental `wrangler deploy`
+## If you need Workers Sites, add a [site] block and an entry-point as
+## documented in the Wrangler docs.
